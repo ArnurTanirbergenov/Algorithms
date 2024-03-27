@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	int n;
+	int counter = 2;
+	cin >> n;
+	if(n == 1){
+		cout << 2;
+		return 0;
+	}
+	if(n == 2){
+		cout << 3;
+		return 0;
+	}
+	for(int i = 5; i <= 7919; i++){
+		bool flag = true;
+		for(int j = 3; j < i; j++){
+			if(i % j == 0){
+				flag = false;
+				break;
+			}
+		}
+		if(flag == true){
+			counter++;
+		}
+		if(counter == n){
+			cout << i;
+			return 0;
+		}
+	}
+}
