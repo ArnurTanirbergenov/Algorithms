@@ -1,0 +1,31 @@
+#include <iostream>
+#include <map>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main(){
+	int n;
+	cin >> n;
+	map<string, string> mp;
+	map<string,string> result;
+	map<string, string>::iterator it;
+	map<string, string>::iterator it2;
+	for(int i = 0; i < n; i++){
+		bool flag = true;
+		string name1, name2;
+		cin >> name1 >> name2;
+		for(it = result.begin(); it != result.end(); it++){
+			if(it->second == name1){
+				result[it->first] = name2;
+				flag = false;
+			}
+		}
+		if(flag == true){
+			result[name1] = name2;
+		}
+	}
+	cout << result.size() << endl;
+	for(it2 = result.begin(); it2 != result.end(); it2++){
+		cout << it2->first << " " << it2->second << endl;
+	}
+}
