@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+long long MOD = 1e9 + 7;
+long long X = 31;
+
+long long getHash(string s){
+	long long curHash = 0;
+	long long hash = 0;
+	long long powX= 1;
+	for(int i = 0 ; i < s.size(); i ++){
+		curHash = ((s[i] - int('a') + 1) * powX) % MOD;
+		hash = (hash + curHash)% MOD;
+		powX = (powX * X) % MOD;
+	}
+	return hash;
+}
+
+vector<long long>  getHashes(string s){
+	vector<long long> hashes(s.size());
+	long long powX= 1;
+	for(int i = 0; i < s.size(); i++){
+		hashes[i] = ((s[i] - int('a') + 1) * powX) % MOD;
+		if(i > 0){
+			hashes[i] = (hashes[i] + hashes[i - 1]) % MOD;
+		}
+		powX = (powX * X) % MOD;
+	}
+	return hashes;
+}
+
+void karp(string s, string t, vector<long long> &v){
+	long long m = t.size();
+	long long n = s.size();
+	long long hash = getHash(t);
+	vector<long long> hashes = getHashes(s);
+	long long powX= 1;
+	for(int i = 0; i + m - 1 < n; i++){
+		long long diff = hashes[i + m - 1];
+		if(i > 0){
+			diff = (diff - hashes[i - 1]) ;
+		}
+		if(diff < 0)diff += MOD;
+		if(i > 0)hash = (hash * X) % MOD;
+		if(hash == diff){
+			for(int j = i; j < i + m;j++){
+				v[j]++;
+			}
+		}
+		powX = (powX * X) % MOD;
+	}
+}
+
+int main() {
+	string s;
+	cin >> s;
+	int n;
+	cin >> n;
+	vector<long long> vec(s.size(), 0);
+	for(int i = 0; i < n; i++){
+		string temp;
+		cin >> temp;
+		karp(s,temp,vec);
+	}
+	for(int i = 0; i < s.size(); i++){
+		if(vec[i] == 0){
+			cout << "NO";
+			return 0;
+		}
+	}
+	cout << "YES";
+}
