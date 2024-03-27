@@ -1,0 +1,72 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+struct Node {
+    int key;
+    Node* left;
+    Node* right;
+    Node(int key) {
+        this->key = key;
+        this->left = NULL;
+        this->right = NULL;
+    };
+};
+
+struct BST {
+    Node* root;
+    int count = 0;
+    BST() {
+        this->root = NULL;
+    }
+
+    Node* add(Node* current, int value) {
+        if (current == NULL) {
+            current = new Node(value);
+        } else if (current->key > value) {
+            current->left = add(current->left, value);
+        } else {
+            current->right = add(current->right, value);
+        }
+        return current;
+    }
+    int counter(Node* current) {
+        if (current == NULL) {
+            return 0;
+        }
+        int leftCount = counter(current->left);
+        int rightCount = counter(current->right);
+
+        return 1 + leftCount + rightCount;
+    }
+	Node* searchNode(Node* current, int value){
+		if(current == NULL)return NULL;
+		if(current->key == value)return current;
+		if(current->key > value){
+			return searchNode(current->left, value);
+		}
+		else return searchNode(current->right, value);
+	}
+};
+
+
+
+int main() {
+    int n;
+    cin >> n;
+    BST bst;
+    for (int i = 0; i < n; i++) {
+        int value;
+        cin >> value;
+        if (bst.root == NULL) {
+            bst.root = bst.add(bst.root, value);
+        } else {
+            bst.add(bst.root, value);
+        }
+    }
+    int x;
+    cin >> x;
+    Node* current = bst.searchNode(bst.root, x);
+    cout << bst.counter(current);
+}
