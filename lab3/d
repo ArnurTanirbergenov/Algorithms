@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    long n, q;
+    cin >> n >> q;
+    vector<long> v1(n);
+    vector<long> v2(q);
+
+    for (long i = 0; i < n; i++) {
+        cin >> v1[i];
+    }
+    sort(v1.begin(), v1.end());
+    
+    for (long i = 0; i < q; i++) {
+        long l1, r1, l2, r2;
+        cin >> l1 >> r1 >> l2 >> r2;
+        long count1 = upper_bound(v1.begin(), v1.end(), r1) - lower_bound(v1.begin(), v1.end(), l1);
+        long count2 = upper_bound(v1.begin(), v1.end(), r2) - lower_bound(v1.begin(), v1.end(), l2);
+
+        long totalCount = count1 + count2;
+        if(l1 <= l2 && r2 <= r1){
+        	totalCount = (upper_bound(v1.begin(), v1.end(), r1) - lower_bound(v1.begin(), v1.end(), l1));
+		}
+		else if (l2 <= l1 && r1 <= r2){
+			totalCount  = upper_bound(v1.begin(), v1.end(), r2) - lower_bound(v1.begin(), v1.end(), l2);
+		}
+		else if (l1 <= l2 && l2 <= r1 && r1 <= r2){
+			totalCount  = upper_bound(v1.begin(), v1.end(), r2) - lower_bound(v1.begin(), v1.end(), l1);
+		}
+		else if (l2 <= l1 && l1 <= r2 && r2 <= r1){
+			totalCount = upper_bound(v1.begin(), v1.end(), r1) - lower_bound(v1.begin(), v1.end(), l2);
+		}
+		else if (l1 <= l2 && r1 <= r2 && l2 <= r1){
+			totalCount = upper_bound(v1.begin(), v1.end(), r2) - lower_bound(v1.begin(), v1.end(), l1);
+		}
+		else if (l2 <= l1 && r2 <= r1 && l1 <= r2){
+			totalCount = upper_bound(v1.begin(), v1.end(), r1) - lower_bound(v1.begin(), v1.end(), l2);
+		}
+		v2[i] = totalCount;
+		}
+	for (long i = 0; i < q; i++) {
+        cout << v2[i] << endl;
+    }
+}
