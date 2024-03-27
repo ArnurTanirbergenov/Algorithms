@@ -1,0 +1,54 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+typedef long long ll;
+typedef pair<ll, ll> pll;
+
+ll p[200500];
+ll sz[200500];
+void make_set(ll n){
+	for(ll i = 0; i < n; i++){
+		p[i] = i;
+		sz[i] = 1;
+	}
+}
+int find(ll a){
+	if(a == p[a]){
+		return a;
+	}
+	return p[a] = find(p[a]);
+}
+bool unite(ll a, ll b){
+	a = find(a);
+	b = find(b);
+	if(a == b){
+		return false;
+	}
+//	if(sz[b] > sz[a]){
+//		swap(a, b);
+//	}
+	p[b] = a;
+	sz[a] += sz[b];
+	return true;
+}
+int main() {
+	ll n;
+	cin >> n;
+	ll arr[n];
+	vector<pair<ll, pll> > edges;
+	for(ll i = 0; i < n;i++){
+		cin >> arr[i];
+		for(ll j = 0; j < i; j++){
+			edges.push_back(make_pair((arr[i] + arr[j]), make_pair(i,j)));
+		}
+	}
+	make_set(n);
+	sort(edges.begin(), edges.end());
+	ll ans = 0;
+	for(auto i : edges){
+		if(unite(i.second.first, i.second.second))ans += i.first;
+	}
+	cout << ans;
+}
