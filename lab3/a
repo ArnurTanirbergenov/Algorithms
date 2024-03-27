@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Element{
+	int value, row, col;
+};
+bool mysort(const Element& a, const Element& b){
+	return a.value < b.value;
+}
+int main(){
+	int size;
+	cin >> size;
+	vector<int> elements(size);
+	for(int i = 0; i < size;i++){
+		cin >> elements[i];
+	}
+	int n, m;
+	cin >> n >> m;
+	vector<Element> snake;
+	snake.reserve(n*m);
+	for(int i = 0; i < n; i++){
+		for(int j = 0; j < m; j++){
+			int num;
+			cin >> num;
+			snake.push_back({num, i, j});
+		}
+	}
+	sort(snake.begin(), snake.end(), mysort);
+	for(int i = 0; i < size; i++){
+		int left = 0;
+		int right = n * m - 1;
+		bool flag = false;
+		while(left <= right){
+			int mid = (left + right) / 2;
+			if(snake[mid].value == elements[i]){
+				cout << snake[mid].row << " " << snake[mid].col << endl;
+				flag = true;
+				break;
+			}
+			else if(snake[mid].value < elements[i])left = mid + 1;
+			else right = mid - 1;
+		}
+		if(flag == false){
+			cout << -1 << endl;
+		}
+	}
+}
