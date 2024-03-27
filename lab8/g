@@ -1,0 +1,41 @@
+#include <iostream>
+using namespace std;
+
+void countPattern(string s, string p)
+{
+    int counter = 0;
+    int n = s.length();
+    int m = p.length();
+	int j;
+    for (int i = 0; i <= n - m; i++){
+        for ( j = 0; j < m; ++j){
+            if (p[j] != s[i + j]){
+                break;
+            }
+        }
+
+        if (j == m){
+            counter++;
+        }
+    }
+    cout << counter << endl;
+}
+
+int main()
+{
+    string s;
+    cin >> s;
+    long long n;
+    cin >> n;
+    while (n--)
+    {
+        long long x, y;
+        cin >> x >> y;
+        string sub = "";
+        for (long long i = x - 1; i < y; i++)
+        {
+            sub += s[i];
+        }
+        countPattern(s, sub);
+    }
+}
