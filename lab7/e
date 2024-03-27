@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+bool mySort(const vector<int> &a, const vector<int> &b){
+	int sumA = 0;
+	for(int i = 0; i < a.size();i++){
+		sumA += a[i];
+	}
+	int sumB = 0;
+	for(int i = 0; i < b.size();i++){
+		sumB += b[i];
+	}
+    if(sumA != sumB)return sumA > sumB;
+    for(int i = 0; i < a.size();i++){
+    	if(a[i] != b[i])return a[i] < b[i];
+	}
+	return false;
+}
+int main(){
+	int n, m;
+	cin >> n >> m;
+	vector<vector<int>> matrix(n, vector<int>(m));
+	for(int i = 0; i < n; i++){
+		for(int j = 0; j < m; j++){
+			cin >> matrix[i][j];
+		}
+	}
+	sort(matrix.begin(), matrix.end(), mySort);
+	for(int i = 0; i < n; i++){
+		for(int j = 0; j < m; j++){
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
