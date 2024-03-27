@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+long findMistakeBlock(vector<long>& cumulative_lines, long M) {
+    long left = 0;
+    long right = cumulative_lines.size() - 1;
+
+    while (left <= right) {
+        long mid = left + (right - left) / 2;
+        
+        if(M == cumulative_lines[mid]){
+        	return mid;
+		}
+
+        else if (M < cumulative_lines[mid]) {
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+
+    return left;
+}
+
+int main() {
+    long N, M;
+    cin >> N >> M;
+
+    vector<long> block_lines(N);
+    vector<long> cumulative_lines(N);
+
+    for (long i = 0; i < N; i++) {
+        cin >> block_lines[i];
+        if (i == 0) {
+            cumulative_lines[i] = block_lines[i];
+        } else {
+            cumulative_lines[i] = cumulative_lines[i - 1] + block_lines[i];
+        }
+    }
+    vector<long> ans(M);
+    for (long i = 0; i < M; i++) {
+        long mistake_line;
+        cin >> mistake_line;
+
+        long mistake_block = findMistakeBlock(cumulative_lines, mistake_line);
+        ans[i] = (mistake_block + 1);
+    }
+    for (long i = 0; i < M; i++){
+    	cout << ans[i] << endl;
+	}
+    return 0;
+}
