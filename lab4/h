@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int value;
+    Node* left;
+    Node* right;
+    Node(int value) {
+        this->value = value;
+        this->left = this->right = NULL;
+    };
+};
+
+struct BST {
+    Node* root;
+    BST() {
+        this->root = nullptr;
+    }
+    
+    Node* add(Node* current, int value) {
+        if (current == NULL) {
+            current = new Node(value);
+        }
+        else if (current->value > value) {
+            current->left = add(current->left, value);
+        }
+        else if (current->value < value) {
+            current->right = add(current->right, value);
+        }
+        return current;
+    }
+    void inorder(Node* current) {
+		if (current==NULL) return;
+		inorder(current->right);
+		cout << current->value << " ";
+		inorder(current->left);
+	}
+	void reverseInorder(Node* node, int& sum) {
+		if (!node) return;
+		reverseInorder(node->right, sum);
+		sum += node->value;
+		node->value = sum;
+		reverseInorder(node->left, sum);
+	}
+};
+
+int main() {
+    int n;
+    cin >> n;
+    BST bst;
+
+    for (int i = 0; i < n; i++) {
+        int value;
+        cin >> value;
+        bst.root = bst.add(bst.root, value);
+    }
+    int sum = 0;
+    bst.reverseInorder(bst.root,sum);
+    bst.inorder(bst.root);
+}
