@@ -1,0 +1,27 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+bool mySort(char a, char b) {
+    string vowels = "aeiou";
+
+    if (vowels.find(a) != string::npos && vowels.find(b) != string::npos) {
+        return a < b;
+    } else if (vowels.find(a) != string::npos) {
+        return true; 
+    } else if (vowels.find(b) != string::npos) {
+        return false; 
+    } else {
+        return a < b; 
+    }
+}
+
+int main() {
+	int n;
+	cin >> n;
+	string s;
+	cin >> s;
+	sort(s.begin(), s.end(), mySort);
+	cout << s;
+}
