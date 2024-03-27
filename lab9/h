@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> prefix_function(string s) {
+    vector<int> p(s.length());
+    int j = 0;
+    for (int i = 1; i < s.length(); i++) {
+        while (j > 0 && s[j] != s[i]) {
+            j = p[j - 1];
+        }
+        if (s[i] == s[j]) {
+            j++;
+            
+        }
+        p[i] = j;
+    }
+    return p;
+}
+
+
+int main() {
+
+    	string s;
+    	cin >> s;
+    	vector<int> v = prefix_function(s);
+    	int counter = 0;
+    	for(int i = 1 ; i < s.size(); i++){
+    		if(i % 2 == 0){
+    			int k = v[i - 1];
+    			int temp = i - k;
+				if((i/temp) % 2 == 0){
+					counter++;
+				} 
+			}
+		}
+		cout << counter;
+}
