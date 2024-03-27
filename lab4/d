@@ -1,0 +1,75 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+struct Node {
+    int key;
+    Node* left;
+    Node* right;
+    Node(int key) {
+        this->key = key;
+        this->left = nullptr;
+        this->right = nullptr;
+    };
+};
+
+struct BST {
+    Node* root;
+    BST() {
+        this->root = nullptr;
+    }
+
+    Node* add(Node* current, int value) {
+        if (current == nullptr) {
+            current = new Node(value);
+        } else if (current->key > value) {
+            current->left = add(current->left, value);
+        } else {
+            current->right = add(current->right, value);
+        }
+        return current;
+    }
+
+    void calculateLevels(Node* root, map<int, int>& levelSum, int level) {
+        if (root == nullptr) return;
+        levelSum[level] += root->key;
+        calculateLevels(root->left, levelSum, level + 1);
+        calculateLevels(root->right, levelSum, level + 1);
+    }
+
+    int findMaxLevel() {
+        map<int, int> levelSum;
+        calculateLevels(root, levelSum, 1);
+
+        int maxLevel = 0;
+        for (const auto& pair : levelSum) {
+            if (maxLevel < pair.first) maxLevel = pair.first;
+        }
+
+        return maxLevel;
+    }
+};
+
+int main() {
+    int n;
+    cin >> n;
+    BST bst;
+    for (int i = 0; i < n; i++) {
+        int value;
+        cin >> value;
+        if (bst.root == nullptr) {
+            bst.root = bst.add(bst.root, value);
+        } else {
+            bst.add(bst.root, value);
+        }
+    }
+    int maxLevel = bst.findMaxLevel();
+    cout << maxLevel << endl;
+    for (int i = 1; i <= maxLevel; i++) {
+        map<int, int> levelSum;
+        bst.calculateLevels(bst.root, levelSum, 1);
+        cout << levelSum[i] << " ";
+    }
+    cout << endl;
+}
