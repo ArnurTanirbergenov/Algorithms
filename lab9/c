@@ -1,0 +1,22 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	string s;
+	cin >> s;
+	string s2;
+	cin >> s2;
+	int n = s2.length();
+	for(int i = 0;i < n; i++){
+		char temp = s2[0];
+		s2.erase(0,1);
+		s2 += temp;
+		if(s == s2){
+			cout << i+ 1;
+			return 0;
+		}
+
+	}
+	cout << -1;
+}
