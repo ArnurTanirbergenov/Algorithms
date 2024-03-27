@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+long counter = 0;
+unordered_map<long long, int> map;
+long long MOD = 1e9 + 7;
+long long X = 31;
+
+void calculate(string s,string s2){
+	long n = s.size();
+	long m = s2.size();
+	long long h[n] = {};
+	long long temp[n] = {};
+	for(size_t i = 0 ; i < n; i++){
+		if(i == 0)temp[i] = 1;
+		else temp[i] = (temp[i-1] * X) % MOD;
+	}
+	long long hashs2 = 0;
+	for(size_t i = 0; i < m; i++){
+		hashs2 = (hashs2 + ((s2[i] - int('a') + 1) * temp[i] )% MOD) % MOD;
+	}
+	
+	for(size_t i = 0; i < n; i++){
+		h[i] = ((s[i] - int('a') + 1) *temp[i]) % MOD;
+		if(i > 0){
+			h[i] = (h[i] + h[i-1])% MOD;
+		}
+	}
+	
+	for(size_t i = 0; i + m - 1 < n; i++){
+		long long diff = h[i + m - 1];
+		
+		if(i > 0){
+			diff = (diff - h[i - 1] + MOD) % MOD;
+		}
+		long long c = (hashs2 * temp[i]) % MOD;
+		if(diff == c){
+			map[i] += 1;
+			if(map[i] > 1){
+				counter++;
+			}
+		}
+	}
+}
+
+int main(){
+	string s1, s2, t;
+	cin >> s1 >> s2 >> t;
+	calculate(s1, t);
+	calculate(s2,t);
+	cout << counter;
+}
