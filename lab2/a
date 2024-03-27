@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+int main() {
+	int n, k;
+	cin >> n;
+	int arr[n];
+	for(int i = 0; i < n;i++){
+		cin >> arr[i];
+	}
+	cin >> k;
+	int difference = 1000000;
+	int ind = 0;
+	for(int i = 0; i < n; i++){
+		if(k - arr[i] > 0){
+			if(k - arr[i] < difference){
+				difference = k - arr[i];
+				ind = i;
+			}
+			
+		}
+		else if (k - arr[i] < 0){
+			int diff = -(k - arr[i]);
+			if(diff < difference){
+				difference = diff;
+				ind = i;
+			}
+		}
+		else{
+			ind = i;
+			break;
+		}
+	}
+	cout << ind;
+
+}
