@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+long long MOD = 1e9 + 7;
+long long X = 11;
+string getHash(string s){
+	long long curHash = 0;
+	long long hash = 0;
+	long long powX = 1;
+	for(char ch: s){
+		curHash = (ch - 47) *powX % MOD;
+		hash = (hash + curHash) %MOD;
+		powX = (powX * X) % MOD;
+	}
+	return to_string(hash);
+}
+
+int main(){
+	int n;
+	cin >> n;
+	vector<string> v;
+	unordered_map<string, int> up;
+	for(int i = 0; i < n * 2; i++){
+		string s;
+		cin >> s;
+		v.push_back(s);
+		up[s] = 1;
+	}
+	int counter = 0;
+	for(int i = 0; i < n * 2;i++){
+		string hash = getHash(v[i]);
+		if(counter == n)break;
+		if(up[hash] == 1){
+			cout << "Hash of string \"" << v[i] << "\" is " << hash << endl;
+			counter++;
+		}
+	}
+}
