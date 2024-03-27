@@ -1,0 +1,97 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+struct Node {
+    int value;
+    Node* left;
+    Node* right;
+
+    Node(int value) {
+        this->value = value;
+        this->left = this->right = nullptr;
+    }
+};
+
+class BST {
+private:
+    void insert(Node* cur, int value, int dir) {
+        Node* newNode = new Node(value);
+        if (dir == 0) {
+            cur->left = newNode;
+        } else {
+            cur->right = newNode;
+        }
+    }
+
+    int calculateWidth(Node* cur) {
+        if (!cur) return 0;
+        queue<Node*> q;
+        q.push(cur);
+        int maxWidth = 0;
+        while (!q.empty()) {
+            int levelWidth = q.size();
+            maxWidth = max(maxWidth, levelWidth);
+            for (int i = 0; i < levelWidth; i++) {
+                Node* temp = q.front();
+                q.pop();
+                if (temp->left) {
+                    q.push(temp->left);
+                }
+                if (temp->right) {
+                    q.push(temp->right);
+                }
+            }
+        }
+        return maxWidth;
+    }
+
+    Node* findNode(Node* cur, int x) {
+        if (!cur) {
+            return nullptr;
+        }
+        if (x == cur->value) {
+            return cur;
+        } else {
+            Node* temp = findNode(cur->left, x);
+            if (temp == nullptr) {
+                temp = findNode(cur->right, x);
+            }
+            return temp;
+        }
+    }
+
+public:
+    Node* root;
+
+    BST() {
+        root = nullptr;
+    }
+
+    void insert(int parentValue, int childValue, int dir) {
+        insert(findNode(root, parentValue), childValue, dir);
+    }
+
+    int findMaxWidth() {
+        return calculateWidth(root);
+    }
+};
+
+int main() {
+    BST tree;
+    int n;
+    cin >> n;
+    int x, y, z;
+
+    tree.root = new Node(1);
+    for (int i = 0; i < n - 1; i++) {
+        cin >> x >> y >> z;
+        tree.insert(x, y, z);
+    }
+
+    int maxWidth = tree.findMaxWidth();
+    cout << maxWidth;
+
+    return 0;
+}
