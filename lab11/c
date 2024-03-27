@@ -1,0 +1,67 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+typedef long long ll;
+typedef pair<ll, ll> pll;
+
+ll p[200500];
+ll sz[200500];
+void make_set(ll n){
+	for(ll i = 0; i < n; i++){
+		p[i] = i;
+		sz[i] = 1;
+	}
+}
+int find(ll a){
+	if(a == p[a]){
+		return a;
+	}
+	return p[a] = find(p[a]);
+}
+bool unite(ll a, ll b){
+	a = find(a);
+	b = find(b);
+	if(a == b){
+		return false;
+	}
+	if(sz[b] > sz[a]){
+		swap(a, b);
+	}
+	p[b] = a;
+	sz[a] += sz[b];
+	return true;
+}
+int main() {
+	ll n, m;
+	cin >> n >> m;
+	ll bigp, smallp;
+	cin >> bigp >> smallp;
+	vector<pair<ll, pll> > edges;
+	for(int i = 0; i < m; i++){
+		string type;
+		int a,b, k;
+		cin >> type;
+		cin >> a >> b >> k;
+		int price = 0;
+		if(type == "both"){
+			price = k * min(bigp,smallp);
+		}
+		else if(type == "small"){
+			price = smallp * k;
+			edges.push_back(make_pair(price, make_pair(a,b)));
+		}
+		else{
+			price = bigp * k;
+		}
+		edges.push_back(make_pair(price, make_pair(a,b)));
+	}
+	make_set(n);
+	sort(edges.begin(), edges.end());
+	ll ans = 0;
+	for(auto i: edges){
+		if(unite(i.second.first, i .second.second))ans+= i.first;
+	}
+	cout << ans;
+}
