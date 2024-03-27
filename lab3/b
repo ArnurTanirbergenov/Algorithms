@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+bool check(vector<long>& v1, long n, long k, long mid){
+	long sum = 0;
+	long blocks = 1;
+	for(long i = 0; i < n;i++){
+		sum += v1[i];
+		if(sum > mid){
+			blocks++;
+			sum = v1[i];
+		}
+	}
+	return blocks <= k;
+}
+
+int main(){
+	long n, k;
+	cin >> n >> k;
+	vector<long> v1(n);
+	for(long i = 0; i < n;i++){
+		cin >> v1[i];
+	}
+	long left = *max_element(v1.begin(), v1.end());
+	long right = 0;
+	for(long i = 0; i < n;i++){
+		right += v1[i];
+	}
+	while(left < right){
+		long mid = left + (right - left) / 2;
+		if(check(v1, n, k, mid)){
+			right = mid;
+		}
+		else left = mid + 1;
+	}
+	cout << left;
+}
