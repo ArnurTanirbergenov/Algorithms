@@ -1,0 +1,35 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int prefix_function(string s) {
+    vector<int> p(s.length());
+    int j = 0;
+    for (int i = 1; i < s.length(); i++) {
+        while (j > 0 && s[j] != s[i]) {
+            j = p[j - 1];
+        }
+        if (s[i] == s[j]) {
+            j++;
+            
+        }
+        p[i] = j;
+    }
+    return p[s.length() - 1];
+}
+
+
+int main() {
+    int n;
+    cin >> n;
+    for(int i = 0; i < n; i++){
+    	string s;
+    	int times;
+    	cin >> s;
+    	cin >> times;
+    	int k = prefix_function(s);
+    	int result = (s.length() - k)*times + k;
+    	cout << result << endl;
+	}
+}
