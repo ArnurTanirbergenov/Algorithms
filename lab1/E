@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+#include <deque>
+int main() {
+	deque <int> deq1;
+	deque <int> deq2;
+	for(int i = 0; i < 5; i++){
+		int n;
+		cin >> n;
+		deq1.push_back(n);
+	}
+	for(int i = 0; i < 5; i++){
+		int n;
+		cin >> n;
+		deq2.push_back(n);
+	}
+	int counter = 0;
+	while(counter < 1000000){
+		int temp1 = 0, temp2 = 0;
+		temp1 = deq1.front();
+		temp2 = deq2.front();
+		if(temp2 == 9 && temp1 == 0){
+			deq1.push_back(temp1);
+			deq1.push_back(temp2);
+			deq1.pop_front();
+			deq2.pop_front();
+		}
+		else if (temp2 == 0 && temp1 == 9){
+			deq2.push_back(temp1);
+			deq2.push_back(temp2);
+			deq1.pop_front();
+			deq2.pop_front();
+		}
+		else if( temp1 > temp2){
+			deq1.push_back(temp1);
+			deq1.push_back(temp2);
+			deq1.pop_front();
+			deq2.pop_front();
+		}
+		else if(temp2 > temp1 ){
+			deq2.push_back(temp1);
+			deq2.push_back(temp2);
+			deq1.pop_front();
+			deq2.pop_front();
+		}
+		counter++;
+		if(deq1.empty()){
+			cout << "Nursik " << counter;
+			return 0;
+		}
+		if(deq2.empty()){
+			cout << "Boris " << counter;
+			return 0;
+		}
+	}
+	cout << "blin nichya";
+}
