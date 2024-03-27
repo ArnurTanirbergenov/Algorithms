@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+struct Student {
+    string firstName;
+    string lastName;
+    double GPA;
+};
+
+bool compareStudents(const Student& a, const Student& b) {
+    if (a.GPA != b.GPA) {
+        return a.GPA < b.GPA;
+    }
+    if (a.lastName != b.lastName) {
+        return a.lastName < b.lastName;
+    }
+    return a.firstName < b.firstName;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<Student> students;
+
+    for (int i = 0; i < n; i++) {
+        string firstName, lastName;
+        int numSubjects;
+        cin >> lastName >> firstName >> numSubjects;
+
+        double totalCredits = 0.0;
+        double totalGradePoints = 0.0;
+
+        for (int j = 0; j < numSubjects; j++) {
+            string grade;
+            int credits;
+            cin >> grade >> credits;
+
+            double gradePoint;
+            if (grade == "A+") gradePoint = 4.00;
+            else if (grade == "A") gradePoint = 3.75;
+            else if (grade == "B+") gradePoint = 3.5;
+            else if (grade == "B") gradePoint = 3.00;
+            else if (grade == "C+") gradePoint = 2.50;
+            else if (grade == "C") gradePoint = 2.00;
+            else if (grade == "D+") gradePoint = 1.50;
+            else if (grade == "D") gradePoint = 1.00;
+            else if (grade == "F") gradePoint = 0.0;
+            
+            totalCredits += credits;
+            totalGradePoints += (gradePoint * credits);
+        }
+
+        double GPA = totalGradePoints / totalCredits;
+        students.push_back({firstName, lastName, GPA});
+    }
+
+    sort(students.begin(), students.end(), compareStudents);
+
+    for (const Student& student : students) {
+        cout << student.lastName << " " << student.firstName << " " << fixed << setprecision(3) << student.GPA << endl;
+    }
+
+    return 0;
+}
