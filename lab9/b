@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> prefix_function(string s) {
+    vector<int> p(s.length());
+    int j = 0;
+    for (int i = 1; i < s.length(); i++) {
+        while (j > 0 && s[j] != s[i]) {
+            j = p[j - 1];
+        }
+        if (s[i] == s[j]) {
+            j++;
+        }
+        p[i] = j;
+    }
+    return p;
+}
+
+int kmp(string word, string pattern) {
+    string s = pattern + " " + word;
+    vector<int> p = prefix_function(s);
+    int n = pattern.length();
+    int counter = 0;
+    for (int i = n + 1; i < s.length(); i++) {
+        if (p[i] == n) {
+            counter++;
+        }
+    }
+    return counter;
+}
+
+int main() {
+    string word;
+    string pattern;
+    cin >> word;
+    int n;
+    cin >> n;
+    cin >> pattern;
+    string text = "";
+    int counter = kmp(pattern,word);
+	if(counter >= n)cout << "YES";
+	else cout << "NO";
+}
